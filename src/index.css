@@ -1,0 +1,48 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.app {
+  text-align: center;
+}
+
+.people, .dishes {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.person, .dish {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin: 0.5rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.person:hover, .dish:hover {
+  background-color: #f0f0f0;
+  transform: scale(1.05);
+}
+
+.dish {
+  min-width: 150px;
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fafafa;
+}
+
+.state-display {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-top: 1px solid #ccc;
+  text-align: left;
+  background-color: #f9f9f9;
+}
