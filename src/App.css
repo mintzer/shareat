@@ -137,13 +137,18 @@ button.selected {
 /* Mobile styles */
 @media (max-width: 600px) {
   .people, .dishes {
-    flex-direction: column;
+    /*flex-direction: column;*/
     align-items: center;
   }
 
-  .person, .dish {
-    width: 100%;
-    max-width: 300px;
+  .person {
+    width: 20%;
+    max-width: 100px;
+  }
+
+  .dish {
+    width: 40%;
+    max-width: 200px;
   }
 
   .calculate-button {
