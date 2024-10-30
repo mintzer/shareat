@@ -8,6 +8,23 @@ const ItemTypes = {
     PERSON: 'person',
 }
 
+document.title = 'ShareEat'
+// OG image
+const ogImage = document.createElement('meta')
+ogImage.setAttribute('property', 'og:image')
+ogImage.content = 'logo2.webp'
+document.head.appendChild(ogImage)
+// OG title
+const ogTitle = document.createElement('meta')
+ogTitle.setAttribute('property', 'og:title')
+ogTitle.content = 'ShareEat'
+document.head.appendChild(ogTitle)
+// OG description
+const ogDescription = document.createElement('meta')
+ogDescription.setAttribute('property', 'og:description')
+ogDescription.content = 'ShareEat is a simple app to split the bill between friends'
+document.head.appendChild(ogDescription)
+
 function Person({ name, id, avatar }) {
     const [{ isDragging }, drag] = useDrag(() => ({
         type: ItemTypes.PERSON,
@@ -88,6 +105,7 @@ function App() {
     const [totalWithTip, setTotalWithTip] = useState(null)
     const [isBillCalculated, setIsBillCalculated] = useState(false)
 
+
     useEffect(() => {
         calculateBill()
     }, [dishes, tipPercentage])
@@ -158,6 +176,9 @@ function App() {
     return (
         <DndProvider backend={HTML5Backend}>
             <div className="app">
+                {/*update the logo of the page*/}
+
+
                 {/*logo*/}
                 <img src="logo2.webp" alt="logo" className="logo" />
                 <h2>Drag people to dishes they had</h2>
