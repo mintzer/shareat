@@ -69,14 +69,14 @@ function Dish({ name, id, icon, price, people, onDrop, onRemove, onAddAll, onRem
             <div>{name}</div>
             <div className="dish-price">₪{price.toFixed(0)}</div>
             <div className="dish-buttons">
-                <button onClick={() => onAddAll(id)}>Everyone</button>
                 <button onClick={() => onRemoveAll(id)}>Restart</button>
+                <button onClick={() => onAddAll(id)}>Everyone</button>
             </div>
             <div className="dish-people">
                 {people.map((person) => (
                     <div key={person.id} className="avatar-small-container">
                         <img src={person.avatar} alt={person.name} className="avatar-small" />
-                        <button onClick={() => onRemove(person.id, id)}>Remove</button>
+                        <button className={"remove-people-button"} onClick={() => onRemove(person.id, id)}>Remove</button>
                     </div>
                 ))}
             </div>
@@ -236,7 +236,7 @@ function App() {
                     ))}
                 </div>
                 <button className="calculate-button" onClick={handleCalculateBill}>Calculate Bill</button>
-                <div>
+                <div className={"tip-options"}>
                     <h3>Tip Options</h3>
                     {[12, 15, 18].map((percentage) => (
                         <button

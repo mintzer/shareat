@@ -87,22 +87,24 @@ button {
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
   /*very gray green*/
-  background-color: #C9C6B7;
+  /*background-color: #C9C6B7;*/
 /*  MAKE IT SMALLER*/
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     /*font-weight: bold;*/
 }
 
 button:hover {
-  background-color: #007bff;
-  color: white;
-  transform: scale(1.05);
+  /*background-color: #007bff;*/
+  /*color: white;*/
+  transform: scale(1.07);
 }
 
 .calculate-button {
   background-color: #28a745;
   color: white;
   margin-top: 1rem;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
 }
 
 .bill-display ul {
@@ -128,9 +130,15 @@ button:hover {
   font-weight: bold;
 }
 
-button.selected {
+.tip-options button.selected {
   background-color: #007bff;
   color: white;
+}
+
+.tip-options button {
+  font-size: 1rem;
+    margin: 0.2rem 0.4rem;
+    padding: 0.4rem 0.6rem;
 }
 
 .logo {
@@ -154,23 +162,23 @@ button.selected {
   border-radius: 7px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
-  font-size: 0.7rem;
-  background-color: #C9C6B7;
+  font-size: 0.8rem;
   /*#FFBCA6;*/
   /*font-weight: bold;*/
 }
 
-.dish-buttons button:selected {
-/*  do nothing - the originals*/
-  background-color: #C9C6B7;
-  color: black;
-}
 
-.dish-buttons button:hover {
-  /*  do nothing - the originals*/
-  background-color: #C9C6B7;
-  color: black ;
-}
+/*.dish-buttons button:selected {*/
+/*!*  do nothing - the originals*!*/
+/*  background-color: #C9C6B7;*/
+/*  color: white;*/
+/*}*/
+
+/*.dish-buttons button:hover {*/
+/*  !*  do nothing - the originals*!*/
+/*  background-color: #C9C6B7;*/
+/*  color: white ;*/
+/*}*/
 
 /* Mobile styles */
 @media (max-width: 600px) {
