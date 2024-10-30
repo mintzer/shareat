@@ -150,7 +150,7 @@ button:hover {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-top: 0.5rem;
+  /*margin-bottom: 0.1rem;*/
   padding: 0.7rem;
 
 }
@@ -164,7 +164,7 @@ button:hover {
   transition: background-color 0.3s, transform 0.3s;
   font-size: 0.8rem;
   /*#FFBCA6;*/
-  /*font-weight: bold;*/
+  font-weight: bold;
 }
 
 
