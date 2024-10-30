@@ -1,69 +1,44 @@
-import {useState, useEffect} from 'react'
-import PropTypes from 'prop-types'
-import {DndProvider, useDrag, useDrop} from 'react-dnd'
+import { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { TouchBackend } from 'react-dnd-touch-backend';
-
-import './App.css'
+import './App.css';
 
 const ItemTypes = {
     PERSON: 'person',
-}
+};
 
-document.title = 'ShareEat'
-// OG image
-const ogImage = document.createElement('meta')
-ogImage.setAttribute('property', 'og:image')
-ogImage.content = 'logo2.webp'
-document.head.appendChild(ogImage)
-// OG title
-const ogTitle = document.createElement('meta')
-ogTitle.setAttribute('property', 'og:title')
-ogTitle.content = 'ShareEat'
-document.head.appendChild(ogTitle)
-// OG description
-const ogDescription = document.createElement('meta')
-ogDescription.setAttribute('property', 'og:description')
-ogDescription.content = 'ShareEat is a simple app to split the bill between friends'
-document.head.appendChild(ogDescription)
-
-// <meta name="viewport" content="width=device-width, initial-scale=1.0">
-const viewport = document.createElement('meta')
-viewport.setAttribute('name', 'viewport')
-viewport.content = 'width=device-width, initial-scale=1.0'
-document.head.appendChild(viewport)
-
-
-function Person({name, id, avatar}) {
-    const [{isDragging}, drag] = useDrag(() => ({
+function Person({ name, id, avatar }) {
+    const [{ isDragging }, drag] = useDrag(() => ({
         type: ItemTypes.PERSON,
-        item: {id},
+        item: { id },
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging(),
         }),
-    }))
+    }));
 
     return (
-        <div ref={drag} className="person" style={{opacity: isDragging ? 0.5 : 1}}>
-            <img src={avatar} alt={name} className="avatar"/>
+        <div ref={drag} className="person" style={{ opacity: isDragging ? 0.5 : 1 }}>
+            <img src={avatar} alt={name} className="avatar" />
             {name}
         </div>
-    )
+    );
 }
 
 Person.propTypes = {
     name: PropTypes.string.isRequired,
     id: PropTypes.number.isRequired,
     avatar: PropTypes.string.isRequired,
-}
+};
 
-function Dish({name, id, icon, price, people, onDrop, onRemove}) {
-    const [{isOver}, drop] = useDrop(() => ({
+function Dish({ name, id, icon, price, people, onDrop, onRemove }) {
+    const [{ isOver }, drop] = useDrop(() => ({
         accept: ItemTypes.PERSON,
         drop: (item) => onDrop(item.id, id),
         collect: (monitor) => ({
             isOver: !!monitor.isOver(),
         }),
-    }))
+    }));
 
     return (
         <div ref={drop} className="dish" style={{ backgroundColor: isOver ? 'lightgreen' : 'white' }}>
@@ -79,7 +54,7 @@ function Dish({name, id, icon, price, people, onDrop, onRemove}) {
                 ))}
             </div>
         </div>
-    )
+    );
 }
 
 Dish.propTypes = {
@@ -96,109 +71,117 @@ Dish.propTypes = {
     ).isRequired,
     onDrop: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
-}
+};
 
 function App() {
     const [people] = useState([
-        {id: 1, name: 'Shay', avatar: 'avatar2.jpg'},
-        {id: 2, name: 'Eitan', avatar: 'avatar1.avif'},
-    ])
+        { id: 1, name: 'Shay', avatar: 'avatar2.jpg' },
+        { id: 2, name: 'Eitan', avatar: 'avatar1.avif' },
+    ]);
     const [dishes, setDishes] = useState([
-        {id: 1, name: 'Pizza', icon: 'pizza.png', price: 12.99, people: []},
-        {id: 2, name: 'Pasta', icon: 'pasta.webp', price: 10.99, people: []},
-    ])
-    const [bill, setBill] = useState(null)
-    const [total, setTotal] = useState(0)
-    const [tipPercentage, setTipPercentage] = useState(12)
-    const [totalWithTip, setTotalWithTip] = useState(null)
-    const [isBillCalculated, setIsBillCalculated] = useState(false)
-
+        { id: 1, name: 'Pizza', icon: 'pizza.png', price: 58.90, people: [] },
+        { id: 2, name: 'Pasta', icon: 'pasta.webp', price: 61.90, people: [] },
+    ]);
+    const [bill, setBill] = useState(null);
+    const [total, setTotal] = useState(0);
+    const [tipPercentage, setTipPercentage] = useState(12);
+    const [totalWithTip, setTotalWithTip] = useState(null);
+    const [isBillCalculated, setIsBillCalculated] = useState(false);
+    const resultsRef = useRef(null);
 
     useEffect(() => {
-        calculateBill()
-    }, [dishes, tipPercentage])
+        calculateBill();
+    }, [dishes, tipPercentage]);
 
     const handleDrop = (personId, dishId) => {
         setDishes((prevDishes) =>
             prevDishes.map((dish) =>
                 dish.id === dishId && !dish.people.some((p) => p.id === personId)
-                    ? {...dish, people: [...dish.people, people.find((p) => p.id === personId)]}
+                    ? { ...dish, people: [...dish.people, people.find((p) => p.id === personId)] }
                     : dish
             )
-        )
-    }
+        );
+    };
 
     const handleRemove = (personId, dishId) => {
         setDishes((prevDishes) =>
             prevDishes.map((dish) =>
                 dish.id === dishId
-                    ? {...dish, people: dish.people.filter((p) => p.id !== personId)}
+                    ? { ...dish, people: dish.people.filter((p) => p.id !== personId) }
                     : dish
             )
-        )
-    }
+        );
+    };
 
     const calculateBill = () => {
         const bill = people.reduce((acc, person) => {
             const total = dishes.reduce((sum, dish) => {
-                const personCount = dish.people.length
+                const personCount = dish.people.length;
                 if (personCount > 0 && dish.people.some((p) => p.id === person.id)) {
-                    return sum + dish.price / personCount
+                    return sum + dish.price / personCount;
                 }
-                return sum
-            }, 0)
-            return {...acc, [person.name]: total}
-        }, {})
+                return sum;
+            }, 0);
+            return { ...acc, [person.name]: total };
+        }, {});
 
-        const totalAmount = Object.values(bill).reduce((sum, amount) => sum + amount, 0)
+        const totalAmount = Object.values(bill).reduce((sum, amount) => sum + amount, 0);
         const unselectedDishesTotal = dishes.reduce((sum, dish) => {
-            return dish.people.length === 0 ? sum + dish.price : sum
-        }, 0)
+            return dish.people.length === 0 ? sum + dish.price : sum;
+        }, 0);
 
         if (unselectedDishesTotal > 0) {
-            const equalShare = unselectedDishesTotal / people.length
-            people.forEach(person => {
-                bill[person.name] += equalShare
-            })
+            const equalShare = unselectedDishesTotal / people.length;
+            people.forEach((person) => {
+                bill[person.name] += equalShare;
+            });
         }
 
-        setBill(bill)
-        setTotal(totalAmount + unselectedDishesTotal)
-        calculateTip(tipPercentage, bill)
-    }
+        setBill(bill);
+        setTotal(totalAmount + unselectedDishesTotal);
+        calculateTip(tipPercentage, bill);
+    };
 
     const calculateTip = (percentage, bill) => {
-        setTipPercentage(percentage)
+        setTipPercentage(percentage);
         const totalWithTip = Object.entries(bill).reduce((acc, [name, amount]) => {
-            const tipAmount = amount * (percentage / 100)
-            return {...acc, [name]: (amount + tipAmount).toFixed(2)}
-        }, {})
-        setTotalWithTip(totalWithTip)
-    }
+            const tipAmount = amount * (percentage / 100);
+            return { ...acc, [name]: (amount + tipAmount).toFixed(2) };
+        }, {});
+        setTotalWithTip(totalWithTip);
+    };
 
     const handleCalculateBill = () => {
-        calculateBill()
-        setIsBillCalculated(true)
-    }
+        calculateBill();
+        setIsBillCalculated(true);
+        setTimeout(() => {
+            resultsRef.current.scrollIntoView({ behavior: 'smooth' });
+        }, 0);
+    };
+
+    const getAvatar = (name) => {
+        const person = people.find((p) => p.name === name);
+        return person ? person.avatar : '';
+    };
+    const getAllAvatars = () => {
+        return people.map((person) => (
+            <img key={person.id} src={person.avatar} alt={person.name} className="avatar-small stacked-avatar" />
+        ));
+    };
 
     return (
         <DndProvider backend={TouchBackend} options={{ enableMouseEvents: true }}>
             <div className="app">
-                {/*update the logo of the page*/}
-
-
-                {/*logo*/}
-                <img src="logo2.webp" alt="logo" className="logo"/>
+                <img src="logo2.webp" alt="logo" className="logo" />
                 <h2>Drag people to dishes they had</h2>
                 <div className="people">
                     {people.map((person) => (
-                        <Person key={person.id} id={person.id} name={person.name} avatar={person.avatar}/>
+                        <Person key={person.id} id={person.id} name={person.name} avatar={person.avatar} />
                     ))}
                 </div>
                 <div className="dishes">
                     {dishes.map((dish) => (
-                        <Dish key={dish.id} id={dish.id} name={dish.name} icon={dish.icon} price={dish.price}
-                              people={dish.people} onDrop={handleDrop} onRemove={handleRemove}/>
+                        <Dish key={dish.id} id={dish.id} name={dish.name} icon={dish.icon} price={dish.price} people={dish.people} onDrop={handleDrop} onRemove={handleRemove} />
                     ))}
                 </div>
                 <button className="calculate-button" onClick={handleCalculateBill}>Calculate Bill</button>
@@ -215,33 +198,38 @@ function App() {
                     ))}
                 </div>
                 {isBillCalculated && bill && (
-                    <div className="bill-display">
+                    <div className="bill-display" ref={resultsRef}>
                         <h2>Bill</h2>
                         <ul>
                             {Object.entries(bill).map(([name, amount]) => (
-                                <li key={name}>{name}: ₪{amount.toFixed(2)}</li>
+                                <li key={name}>
+                                    <img src={getAvatar(name)} alt={name} className="avatar-small" />
+                                    {name}: ₪{amount.toFixed(2)}
+                                </li>
                             ))}
                         </ul>
-                        <div>Total: ₪{total.toFixed(2)}</div>
+                        <div className="total-section">
+                            <div className="stacked-avatars">{getAllAvatars()}Total: ₪{total.toFixed(2)}</div>
+                            <div></div>
+                        </div>
                         {totalWithTip && (
                             <div className="tip-display">
-                                <h3>Total with Tip:</h3>
+                                <h3>With Tip:</h3>
                                 <ul>
                                     {Object.entries(totalWithTip).map(([name, amount]) => (
-                                        <li key={name}>{name}: ₪{amount}</li>
+                                        <li key={name}>
+                                            <img src={getAvatar(name)} alt={name} className="avatar-small" />
+                                            {name}: ₪{amount}
+                                        </li>
                                     ))}
                                 </ul>
                             </div>
                         )}
                     </div>
                 )}
-                {/*<div className="state-display">*/}
-                {/*    <h2>Current State</h2>*/}
-                {/*    <pre>{JSON.stringify({ people, dishes }, null, 2)}</pre>*/}
-                {/*</div>*/}
             </div>
         </DndProvider>
-    )
+    );
 }
 
-export default App
+export default App;
