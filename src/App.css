@@ -31,8 +31,8 @@
 }
 
 .dish {
-  min-width: 100px;
-  min-height: 100px;
+  min-width: 130px !important;
+  min-height: 130px !important;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -55,8 +55,8 @@
 }
 
 .dish-icon {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   margin-bottom: 0.5rem;
 }
 
@@ -81,11 +81,16 @@
 }
 
 button {
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 0.3rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 7px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
+  /*very gray green*/
+  background-color: #C9C6B7;
+/*  MAKE IT SMALLER*/
+    font-size: 0.7rem;
+    /*font-weight: bold;*/
 }
 
 button:hover {
@@ -133,6 +138,39 @@ button.selected {
   margin: 1rem;
 }
 
+.dish-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.7rem;
+
+}
+
+.dish-buttons button {
+  flex: 1;
+  margin: 0 0.2rem;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  font-size: 0.7rem;
+  background-color: #C9C6B7;
+  /*#FFBCA6;*/
+  /*font-weight: bold;*/
+}
+
+.dish-buttons button:selected {
+/*  do nothing - the originals*/
+  background-color: #C9C6B7;
+  color: black;
+}
+
+.dish-buttons button:hover {
+  /*  do nothing - the originals*/
+  background-color: #C9C6B7;
+  color: black ;
+}
 
 /* Mobile styles */
 @media (max-width: 600px) {
@@ -146,18 +184,13 @@ button.selected {
     max-width: 100px;
   }
 
-  .dish {
-    width: 30%;
-    max-width: 200px;
-  }
-
   .calculate-button {
     width: 100%;
     max-width: 300px;
   }
 
   .logo {
-    width: 200px;
+    width: 300px;
   }
 }
 
