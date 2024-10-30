@@ -25,6 +25,7 @@ ogDescription.setAttribute('property', 'og:description')
 ogDescription.content = 'ShareEat is a simple app to split the bill between friends'
 document.head.appendChild(ogDescription)
 
+
 function Person({ name, id, avatar }) {
     const [{ isDragging }, drag] = useDrag(() => ({
         type: ItemTypes.PERSON,
