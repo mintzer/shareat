@@ -134,5 +134,26 @@ button.selected {
 }
 
 
+/* Mobile styles */
+@media (max-width: 600px) {
+  .people, .dishes {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .person, .dish {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .calculate-button {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .logo {
+    width: 200px;
+  }
+}
 
 
