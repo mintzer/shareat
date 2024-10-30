@@ -4,6 +4,29 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { TouchBackend } from 'react-dnd-touch-backend';
 import './App.css';
 
+document.title = 'ShareEat'
+// OG image
+const ogImage = document.createElement('meta')
+ogImage.setAttribute('property', 'og:image')
+ogImage.content = 'https://gitlab.com/shay9844/shareat/-/raw/main/public/logo2.webp'
+document.head.appendChild(ogImage)
+// OG title
+const ogTitle = document.createElement('meta')
+ogTitle.setAttribute('property', 'og:title')
+ogTitle.content = 'ShareEat'
+document.head.appendChild(ogTitle)
+// OG description
+const ogDescription = document.createElement('meta')
+ogDescription.setAttribute('property', 'og:description')
+ogDescription.content = 'ShareEat is a simple app to split the bill between friends'
+document.head.appendChild(ogDescription)
+
+// <meta name="viewport" content="width=device-width, initial-scale=1.0">
+const viewport = document.createElement('meta')
+viewport.setAttribute('name', 'viewport')
+viewport.content = 'width=device-width, initial-scale=1.0'
+document.head.appendChild(viewport)
+
 const ItemTypes = {
     PERSON: 'person',
 };
@@ -31,7 +54,7 @@ Person.propTypes = {
     avatar: PropTypes.string.isRequired,
 };
 
-function Dish({ name, id, icon, price, people, onDrop, onRemove }) {
+function Dish({ name, id, icon, price, people, onDrop, onRemove, onAddAll, onRemoveAll }) {
     const [{ isOver }, drop] = useDrop(() => ({
         accept: ItemTypes.PERSON,
         drop: (item) => onDrop(item.id, id),
@@ -44,7 +67,11 @@ function Dish({ name, id, icon, price, people, onDrop, onRemove }) {
         <div ref={drop} className="dish" style={{ backgroundColor: isOver ? 'lightgreen' : 'white' }}>
             <img src={icon} alt={name} className="dish-icon" />
             <div>{name}</div>
-            <div className="dish-price">₪{price.toFixed(2)}</div>
+            <div className="dish-price">₪{price.toFixed(0)}</div>
+            <div className="dish-buttons">
+                <button onClick={() => onAddAll(id)}>Everyone</button>
+                <button onClick={() => onRemoveAll(id)}>Restart</button>
+            </div>
             <div className="dish-people">
                 {people.map((person) => (
                     <div key={person.id} className="avatar-small-container">
@@ -71,12 +98,15 @@ Dish.propTypes = {
     ).isRequired,
     onDrop: PropTypes.func.isRequired,
     onRemove: PropTypes.func.isRequired,
+    onAddAll: PropTypes.func.isRequired,
+    onRemoveAll: PropTypes.func.isRequired,
 };
 
 function App() {
     const [people] = useState([
         { id: 1, name: 'Shay', avatar: 'avatar2.jpg' },
         { id: 2, name: 'Eitan', avatar: 'avatar1.avif' },
+        { id: 3, name: 'Mika', avatar: 'avatar3.png' },
     ]);
     const [dishes, setDishes] = useState([
         { id: 1, name: 'Pizza', icon: 'pizza.png', price: 58.90, people: [] },
@@ -109,6 +139,22 @@ function App() {
                 dish.id === dishId
                     ? { ...dish, people: dish.people.filter((p) => p.id !== personId) }
                     : dish
+            )
+        );
+    };
+
+    const handleAddAll = (dishId) => {
+        setDishes((prevDishes) =>
+            prevDishes.map((dish) =>
+                dish.id === dishId ? { ...dish, people: people } : dish
+            )
+        );
+    };
+
+    const handleRemoveAll = (dishId) => {
+        setDishes((prevDishes) =>
+            prevDishes.map((dish) =>
+                dish.id === dishId ? { ...dish, people: [] } : dish
             )
         );
     };
@@ -146,12 +192,17 @@ function App() {
         setTipPercentage(percentage);
         const totalWithTip = Object.entries(bill).reduce((acc, [name, amount]) => {
             const tipAmount = amount * (percentage / 100);
-            return { ...acc, [name]: (amount + tipAmount).toFixed(2) };
+            return { ...acc, [name]: (amount + tipAmount).toFixed(0) };
         }, {});
         setTotalWithTip(totalWithTip);
     };
 
     const handleCalculateBill = () => {
+        setDishes((prevDishes) =>
+            prevDishes.map((dish) =>
+                dish.people.length === 0 ? { ...dish, people: people } : dish
+            )
+        );
         calculateBill();
         setIsBillCalculated(true);
         setTimeout(() => {
@@ -181,7 +232,7 @@ function App() {
                 </div>
                 <div className="dishes">
                     {dishes.map((dish) => (
-                        <Dish key={dish.id} id={dish.id} name={dish.name} icon={dish.icon} price={dish.price} people={dish.people} onDrop={handleDrop} onRemove={handleRemove} />
+                        <Dish key={dish.id} id={dish.id} name={dish.name} icon={dish.icon} price={dish.price} people={dish.people} onDrop={handleDrop} onRemove={handleRemove} onAddAll={handleAddAll} onRemoveAll={handleRemoveAll} />
                     ))}
                 </div>
                 <button className="calculate-button" onClick={handleCalculateBill}>Calculate Bill</button>
@@ -204,12 +255,12 @@ function App() {
                             {Object.entries(bill).map(([name, amount]) => (
                                 <li key={name}>
                                     <img src={getAvatar(name)} alt={name} className="avatar-small" />
-                                    {name}: ₪{amount.toFixed(2)}
+                                    {name}: ₪{amount.toFixed(0)}
                                 </li>
                             ))}
                         </ul>
                         <div className="total-section">
-                            <div className="stacked-avatars">{getAllAvatars()}Total: ₪{total.toFixed(2)}</div>
+                            <div className="stacked-avatars">{getAllAvatars()}Total: ₪{total.toFixed(0)}</div>
                             <div></div>
                         </div>
                         {totalWithTip && (
@@ -232,4 +283,4 @@ function App() {
     );
 }
 
-export default App;
+export default App;;
