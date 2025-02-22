@@ -47,13 +47,6 @@
       "icon": "burger.webp",
       "price": 75.90,
       "people": []
-    },
-    "4": {
-      "id": 4,
-      "name": "Cola Zero",
-      "icon": "cola.webp",
-      "price": 15.90,
-      "people": []
     }
   }
 }
