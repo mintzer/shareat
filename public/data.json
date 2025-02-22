@@ -1,0 +1,59 @@
+{
+  "people": {
+    "0": {
+      "id": 0,
+      "name": "Shay",
+      "avatar": "avatar2.jpg",
+      "isActive": false
+    },
+    "1": {
+      "id": 1,
+      "name": "Eitan",
+      "avatar": "avatar1.avif",
+      "isActive": false
+    },
+    "2": {
+      "id": 2,
+      "name": "Mika",
+      "avatar": "avatar3.png",
+      "isActive": false
+    }
+  },
+  "dishes": {
+    "0": {
+      "id": 0,
+      "name": "Pizza",
+      "icon": "pizza.png",
+      "price": 58.90,
+      "people": []
+    },
+    "1": {
+      "id": 1,
+      "name": "Pasta",
+      "icon": "pasta.webp",
+      "price": 61.90,
+      "people": []
+    },
+    "2": {
+      "id": 2,
+      "name": "Beer",
+      "icon": "beer.png",
+      "price": 32,
+      "people": []
+    },
+    "3": {
+      "id": 3,
+      "name": "Burger",
+      "icon": "burger.webp",
+      "price": 75.90,
+      "people": []
+    },
+    "4": {
+      "id": 4,
+      "name": "Cola Zero",
+      "icon": "cola.webp",
+      "price": 15.90,
+      "people": []
+    }
+  }
+}
