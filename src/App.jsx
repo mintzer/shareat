@@ -21,7 +21,7 @@ const firebaseConfig = {
 // // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
-await updateActivePeople();
+updateActivePeople();
 
 document.title = 'ShareEat'
 // OG image
