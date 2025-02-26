@@ -505,6 +505,14 @@ function App() {
         ));
     };
 
+    // Add this function to handle the "Move to checkout" button click
+    const handleMoveToCheckout = async () => {
+        setIsBillCalculated(false); // Close the tip section
+        for (const person of people) {
+            await handlePeopleRemoval(person.id);
+        }
+    };
+
     return (
         <DndProvider backend={TouchBackend} options={{enableMouseEvents: true}}>
             <div className="app">
@@ -587,6 +595,7 @@ function App() {
                                 </ul>
                             </div>
                         )}
+                        <button className="move-to-checkout-button" onClick={handleMoveToCheckout}>Move To Checkout</button>
                     </div>
                 )}
             </div>
